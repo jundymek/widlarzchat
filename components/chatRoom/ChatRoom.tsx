@@ -1,7 +1,8 @@
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useState } from "react";
+import { Button, Text, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { TextInput } from "react-native-gesture-handler";
 
 interface Props {
   route: RouteProp<{ params: { chatId: string } }, "params">;
@@ -34,6 +35,15 @@ export const GET_ROOM = gql`
     }
   }
 `;
+
+export const NEW_MESSAGE = gql`
+  mutation($chatId: String!, $body: String!) {
+    sendMessage(roomId: $chatId, body: $body) {
+      body
+      id
+    }
+  }
+`;
 interface User {
   __typename: string;
   email: string;
@@ -50,11 +60,13 @@ interface Message {
 }
 
 export const ChatRoom = React.memo<Props>(({ route }) => {
+  const [message, onChangeText] = useState<string | undefined>(undefined);
   const { chatId } = route.params;
   console.log(chatId);
   const { data, loading } = useQuery(GET_ROOM, { variables: { chatId } });
 
   console.log(data && data.room.messages);
+  const [newMessage] = useMutation(NEW_MESSAGE);
 
   if (loading) return <Text>Loading...</Text>;
   return (
@@ -62,11 +74,17 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
       {data &&
         data.room.messages.map((message: Message) => {
           return (
-            <Text>
+            <Text key={message.id}>
               {message.body} - {message.user.firstName} {message.user.lastName}{" "}
             </Text>
           );
         })}
+      <TextInput
+        style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+        onChangeText={(text) => onChangeText(text)}
+        value={message}
+      />
+      <Button title="Wyślij" onPress={() => newMessage({ variables: { chatId, body: message } })} />
     </View>
   );
 });
