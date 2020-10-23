@@ -1,14 +1,20 @@
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { Text } from "react-native";
+import { Button } from "react-native";
 import { Room } from "../Rooms";
 
+type NavigationParamList = {
+  Home: undefined;
+  ChatRoom: { chatId: string };
+};
 interface RoomProps {
   room: Room;
+  navigation: StackNavigationProp<NavigationParamList>;
 }
 
-export const SingleRoom = React.memo<RoomProps>(({ room }) => {
-  const { name } = room;
-  return <Text>{name}</Text>;
+export const SingleRoom = React.memo<RoomProps>(({ navigation, room }) => {
+  const { name, id } = room;
+  return <Button title={name} onPress={() => navigation.navigate("ChatRoom", { chatId: id })} />;
 });
 
 SingleRoom.displayName = "SingleRoom";
