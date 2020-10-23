@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -11,8 +11,6 @@ import { Rooms } from "./components/rooms/Rooms";
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
 });
-
-console.log(API_TOKEN);
 
 const authLink = setContext((_, { headers }) => {
   const token = `${API_TOKEN}`;
@@ -33,7 +31,6 @@ export default function App(): ReactNode {
   return (
     <ApolloProvider client={client}>
       <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your appss!</Text>
         <Rooms />
         <StatusBar style="auto" />
       </View>

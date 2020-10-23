@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Text, View } from "react-native";
+import { SingleRoom } from "./room/Room";
 
 export const GET_ROOMS = gql`
   query Rooms {
@@ -20,7 +21,7 @@ export const GET_ROOMS = gql`
   }
 `;
 
-interface Room {
+export interface Room {
   id: string;
   name: string;
   __typename: string;
@@ -34,7 +35,7 @@ export const Rooms = React.memo(() => {
     <View>
       {data &&
         data.usersRooms.rooms.map((room: Room) => {
-          return <Text key={room.id}>{room.name}</Text>;
+          return <SingleRoom room={room} key={room.id} />;
         })}
     </View>
   );
