@@ -4,7 +4,7 @@ import { RouteProp } from "@react-navigation/native";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 
 interface Props {
-  route: RouteProp<{ params: { roomId: string } }, "params">;
+  route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
 }
 
 export const GET_ROOM = gql`
@@ -89,6 +89,7 @@ interface Message {
 
 export const ChatRoom = React.memo<Props>(({ route }) => {
   const [newMessage, setNewMessage] = useState<string | undefined>(undefined);
+  console.log(route.params);
   const { roomId } = route.params;
   const { data, loading } = useQuery(GET_ROOM, { variables: { roomId } });
 
@@ -102,7 +103,7 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
   if (loading) return <Text>Loading...</Text>;
   return (
     <View>
-      {subscription && subscription.data && <Text>subscription.data.messageAdded.body</Text>}
+      {subscription && subscription.data && <Text>{subscription.data.messageAdded.body}</Text>}
       {data &&
         data.room.messages.map((message: Message) => {
           return (

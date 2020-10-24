@@ -1,11 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { Button } from "react-native";
 import { Room } from "../Rooms";
+import { ListItem, Icon } from "react-native-elements";
 
 type NavigationParamList = {
   Home: undefined;
-  ChatRoom: { roomId: string };
+  ChatRoom: { roomId: string; name: string };
 };
 interface RoomProps {
   room: Room;
@@ -14,7 +14,16 @@ interface RoomProps {
 
 export const SingleRoom = React.memo<RoomProps>(({ navigation, room }) => {
   const { name, id } = room;
-  return <Button title={name} onPress={() => navigation.navigate("ChatRoom", { roomId: id })} />;
+  return (
+    <>
+      <ListItem bottomDivider onPress={() => navigation.navigate("ChatRoom", { roomId: id, name: name })}>
+        <Icon name="input" type="material" color="#517fa4" />
+        <ListItem.Content>
+          <ListItem.Title>{name}</ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+    </>
+  );
 });
 
 SingleRoom.displayName = "SingleRoom";

@@ -18,6 +18,7 @@
     "@types/absinthe__socket-apollo-link": "^0.2.1",
     "@types/phoenix": "^1.5.0",
     "@types/react-native-dotenv": "^0.2.0",
+    "@types/styled-components": "^5.1.4",
     "expo": "~39.0.2",
     "expo-status-bar": "~1.0.2",
     "graphql": "^15.3.0",
@@ -26,10 +27,12 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-dotenv": "^2.4.1",
+    "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
+    "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
@@ -40,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "eslint": "^7.11.0",
+    "styled-components": "^5.2.0",
     "typescript": "~3.9.5"
   },
   "private": true
