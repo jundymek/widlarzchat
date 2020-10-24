@@ -12,8 +12,15 @@ import { API_TOKEN } from "@env";
 import { Rooms } from "./components/rooms/Rooms";
 import { ChatRoom } from "./components/chatRoom/ChatRoom";
 
+import { Socket as PhoenixSocket } from "phoenix";
+import * as AbsintheSocket from "@absinthe/socket";
+import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
+import { split } from "apollo-link";
+import { hasSubscription } from "@jumpn/utils-graphql";
+
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
+  credentials: "same-origin",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -26,8 +33,20 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const authedHttpLink = authLink.concat(httpLink);
+
+const phoenixSocket = new PhoenixSocket("wss://chat.thewidlarzgroup.com/socket", {
+  params: () => {
+    return { token: `${API_TOKEN}` };
+  },
+});
+
+const absintheSocket = AbsintheSocket.create(phoenixSocket);
+const websocketLink = createAbsintheSocketLink(absintheSocket);
+const link = split((operation) => hasSubscription(operation.query), websocketLink, authedHttpLink);
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link,
   cache: new InMemoryCache(),
 });
 

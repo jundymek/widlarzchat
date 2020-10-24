@@ -14,7 +14,7 @@ interface RoomProps {
 
 export const SingleRoom = React.memo<RoomProps>(({ navigation, room }) => {
   const { name, id } = room;
-  return <Button title={name} onPress={() => navigation.navigate("ChatRoom", { chatId: id })} />;
+  return <Button title={name} onPress={() => navigation.navigate("ChatRoom", { roomId: id })} />;
 });
 
 SingleRoom.displayName = "SingleRoom";

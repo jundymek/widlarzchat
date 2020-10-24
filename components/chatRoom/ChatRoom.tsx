@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, TextInput, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { TextInput } from "react-native-gesture-handler";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 
 interface Props {
-  route: RouteProp<{ params: { chatId: string } }, "params">;
+  route: RouteProp<{ params: { roomId: string } }, "params">;
 }
 
 export const GET_ROOM = gql`
-  query Room($chatId: String!) {
-    room(id: $chatId) {
+  query Room($roomId: String!) {
+    room(id: $roomId) {
       id
       name
       messages {
@@ -37,10 +36,39 @@ export const GET_ROOM = gql`
 `;
 
 export const NEW_MESSAGE = gql`
-  mutation($chatId: String!, $body: String!) {
-    sendMessage(roomId: $chatId, body: $body) {
+  mutation($roomId: String!, $body: String!) {
+    sendMessage(roomId: $roomId, body: $body) {
       body
       id
+    }
+  }
+`;
+
+export const UPDATE_MESSAGES = gql`
+  subscription($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      body
+      id
+      insertedAt
+      user {
+        email
+        firstName
+        id
+        lastName
+        role
+      }
+    }
+  }
+`;
+
+export const TYPING_USER = gql`
+  subscription($roomId: String!) {
+    typingUser(roomId: $roomId) {
+      email
+      firstName
+      id
+      lastName
+      role
     }
   }
 `;
@@ -60,17 +88,21 @@ interface Message {
 }
 
 export const ChatRoom = React.memo<Props>(({ route }) => {
-  const [message, onChangeText] = useState<string | undefined>(undefined);
-  const { chatId } = route.params;
-  console.log(chatId);
-  const { data, loading } = useQuery(GET_ROOM, { variables: { chatId } });
+  const [newMessage, setNewMessage] = useState<string | undefined>(undefined);
+  const { roomId } = route.params;
+  const { data, loading } = useQuery(GET_ROOM, { variables: { roomId } });
 
+  const subscription = useSubscription(UPDATE_MESSAGES, { variables: { roomId } });
+  const typingUser = useSubscription(TYPING_USER, { variables: { roomId } });
+  console.log(typingUser);
+  console.log(subscription);
   console.log(data && data.room.messages);
-  const [newMessage] = useMutation(NEW_MESSAGE);
+  const [sendMessage] = useMutation(NEW_MESSAGE);
 
   if (loading) return <Text>Loading...</Text>;
   return (
     <View>
+      {subscription && subscription.data && <Text>subscription.data.messageAdded.body</Text>}
       {data &&
         data.room.messages.map((message: Message) => {
           return (
@@ -81,10 +113,10 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
         })}
       <TextInput
         style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-        onChangeText={(text) => onChangeText(text)}
-        value={message}
+        onChangeText={(text) => setNewMessage(text)}
+        value={newMessage ? newMessage : ""}
       />
-      <Button title="Wyślij" onPress={() => newMessage({ variables: { chatId, body: message } })} />
+      <Button title="Wyślij" onPress={() => sendMessage({ variables: { roomId, body: newMessage } })} />
     </View>
   );
 });
