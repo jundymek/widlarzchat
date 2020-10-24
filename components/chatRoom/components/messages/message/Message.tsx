@@ -10,13 +10,14 @@ interface MessageProps {
 }
 
 interface BoxProps {
-  isMe: boolean;
+  isMe?: boolean;
 }
 
 const Wrapper = styled.View<BoxProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  max-width: 80%;
   align-self: ${(props) => (props.isMe ? "flex-start" : "flex-end")};
 `;
 
@@ -24,13 +25,25 @@ const StyledView = styled.View<BoxProps>`
   height: auto;
   padding: 10px;
   border-radius: 20px;
-  margin-bottom: 10px;
-  max-width: 80%;
   background-color: ${(props) => (props.isMe ? "blue" : "white")};
+`;
+
+const StyledDateWrapper = styled.View`
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  margin-bottom: 10px;
 `;
 
 const StyledText = styled.Text<BoxProps>`
   color: ${(props) => (props.isMe ? "white" : "black")};
+`;
+
+const DateText = styled.Text`
+  color: gray;
+  font-size: 8px;
+  align-self: flex-end;
+  margin-top: 6px;
 `;
 
 export const Message = React.memo<MessageProps>(({ message }) => {
@@ -44,11 +57,12 @@ export const Message = React.memo<MessageProps>(({ message }) => {
         title={getInitials(message.user.firstName, message.user.lastName)}
         containerStyle={{ backgroundColor: "gray", marginRight: "10px" }}
       />
-      <StyledView isMe={myUser === message.user.id}>
-        <StyledText key={message.id} isMe={myUser === message.user.id}>
-          {message.body} - {message.user.firstName} {message.user.lastName}{" "}
-        </StyledText>
-      </StyledView>
+      <StyledDateWrapper>
+        <StyledView isMe={myUser === message.user.id}>
+          <StyledText isMe={myUser === message.user.id}>{message.body}</StyledText>
+        </StyledView>
+        <DateText>{message.insertedAt}</DateText>
+      </StyledDateWrapper>
     </Wrapper>
   );
 });
