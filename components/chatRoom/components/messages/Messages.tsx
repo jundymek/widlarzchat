@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components/native";
 import { Message } from "./message/Message";
 
 interface User {
@@ -21,16 +22,24 @@ interface MessagesProps {
   data: Message[];
 }
 
+const Wrapper = styled.View`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+`;
+
 export const Messages = React.memo<MessagesProps>(({ data }) => {
   if (!data) {
     return null;
   }
+  console.log(data);
   return (
-    <>
+    <Wrapper>
       {data.map((message: Message) => {
         return <Message key={message.id} message={message} />;
       })}
-    </>
+    </Wrapper>
   );
 });
 
