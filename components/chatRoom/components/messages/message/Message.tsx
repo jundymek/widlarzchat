@@ -2,7 +2,6 @@ import React from "react";
 import { Message as SingleMessage } from "../Messages";
 import styled from "styled-components/native";
 import { Avatar } from "react-native-elements";
-import { View } from "react-native";
 import { getInitials } from "./utils/getInitials";
 
 interface MessageProps {

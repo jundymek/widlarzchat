@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Text, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import { Messages } from "./components/messages/Messages";
 import { GET_ROOM, NEW_MESSAGE, UPDATE_MESSAGES } from "../../helpers/databaseQueries";
+import { Input, Icon } from "react-native-elements";
+import styled from "styled-components/native";
 
 interface Props {
   route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
 }
+
+const InputWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+`;
 
 export const ChatRoom = React.memo<Props>(({ route }) => {
   const [newMessage, setNewMessage] = useState<string | undefined>(undefined);
@@ -21,12 +32,19 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
     <View>
       {subscription && subscription.data && <Text>{subscription.data.messageAdded.body}</Text>}
       <Messages data={data.room.messages} />
-      <TextInput
-        style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-        onChangeText={(text) => setNewMessage(text)}
-        value={newMessage ? newMessage : ""}
-      />
-      <Button title="Wyślij" onPress={() => sendMessage({ variables: { roomId, body: newMessage } })} />
+      <InputWrapper>
+        <Input
+          placeholder="Type a message..."
+          leftIcon={{ type: "font-awesome", name: "comment-o", color: "gray" }}
+          onChangeText={(text) => setNewMessage(text)}
+        />
+        <Icon
+          name="send"
+          type="material"
+          color="#f50"
+          onPress={() => sendMessage({ variables: { roomId, body: newMessage } })}
+        />
+      </InputWrapper>
     </View>
   );
 });
