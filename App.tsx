@@ -57,8 +57,16 @@ export default function App(): ReactNode {
     <NavigationContainer>
       <ApolloProvider client={client}>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={Rooms} options={{ title: "Available rooms" }} />
-          <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ title: "Chat" }} />
+          <Stack.Screen
+            name="Home"
+            component={Rooms}
+            options={{ title: "Available rooms", headerTitleStyle: { alignSelf: "center" } }}
+          />
+          <Stack.Screen
+            name="ChatRoom"
+            component={ChatRoom}
+            options={({ route }) => ({ title: route.params && route.params.name })}
+          />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </ApolloProvider>
