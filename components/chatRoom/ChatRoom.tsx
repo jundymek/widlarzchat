@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import { Messages } from "./components/messages/Messages";
 
 interface Props {
   route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
@@ -61,57 +62,18 @@ export const UPDATE_MESSAGES = gql`
   }
 `;
 
-export const TYPING_USER = gql`
-  subscription($roomId: String!) {
-    typingUser(roomId: $roomId) {
-      email
-      firstName
-      id
-      lastName
-      role
-    }
-  }
-`;
-interface User {
-  __typename: string;
-  email: string;
-  firstName: string;
-  id: string;
-  lastName: string;
-  role: string;
-}
-interface Message {
-  body: string;
-  id: string;
-  insertedAt: string;
-  user: User;
-}
-
 export const ChatRoom = React.memo<Props>(({ route }) => {
   const [newMessage, setNewMessage] = useState<string | undefined>(undefined);
-  console.log(route.params);
   const { roomId } = route.params;
   const { data, loading } = useQuery(GET_ROOM, { variables: { roomId } });
-
   const subscription = useSubscription(UPDATE_MESSAGES, { variables: { roomId } });
-  const typingUser = useSubscription(TYPING_USER, { variables: { roomId } });
-  console.log(typingUser);
-  console.log(subscription);
-  console.log(data && data.room.messages);
   const [sendMessage] = useMutation(NEW_MESSAGE);
 
   if (loading) return <Text>Loading...</Text>;
   return (
     <View>
       {subscription && subscription.data && <Text>{subscription.data.messageAdded.body}</Text>}
-      {data &&
-        data.room.messages.map((message: Message) => {
-          return (
-            <Text key={message.id}>
-              {message.body} - {message.user.firstName} {message.user.lastName}{" "}
-            </Text>
-          );
-        })}
+      <Messages data={data.room.messages} />
       <TextInput
         style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
         onChangeText={(text) => setNewMessage(text)}
