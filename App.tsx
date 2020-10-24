@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React, { ReactNode } from "react";
-import { StyleSheet, View } from "react-native";
 
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -43,6 +42,7 @@ const phoenixSocket = new PhoenixSocket("wss://chat.thewidlarzgroup.com/socket",
 
 const absintheSocket = AbsintheSocket.create(phoenixSocket);
 const websocketLink = createAbsintheSocketLink(absintheSocket);
+
 const link = split((operation) => hasSubscription(operation.query), websocketLink, authedHttpLink);
 
 const client = new ApolloClient({
@@ -59,21 +59,9 @@ export default function App(): ReactNode {
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Rooms} options={{ title: "Available rooms" }} />
           <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ title: "Chat" }} />
-          {/* <View style={styles.container}>
-            <Rooms />
-            <StatusBar style="auto" />
-          </View> */}
         </Stack.Navigator>
+        <StatusBar style="auto" />
       </ApolloProvider>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

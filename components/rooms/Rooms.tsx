@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View } from "react-native";
 import { SingleRoom } from "./room/Room";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -29,7 +29,7 @@ export interface Room {
 }
 type NavigationParamList = {
   Home: undefined;
-  ChatRoom: { chatId: string };
+  ChatRoom: { roomId: string };
 };
 interface Props {
   navigation: StackNavigationProp<NavigationParamList>;
@@ -40,14 +40,12 @@ export const Rooms = React.memo<Props>(({ navigation }) => {
 
   if (loading) return <Text>Loading...</Text>;
   return (
-    <>
-      <View>
-        {data &&
-          data.usersRooms.rooms.map((room: Room) => {
-            return <SingleRoom navigation={navigation} room={room} key={room.id} />;
-          })}
-      </View>
-    </>
+    <View>
+      {data &&
+        data.usersRooms.rooms.map((room: Room) => {
+          return <SingleRoom navigation={navigation} room={room} key={room.id} />;
+        })}
+    </View>
   );
 });
 

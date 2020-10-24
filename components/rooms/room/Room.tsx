@@ -5,7 +5,7 @@ import { Room } from "../Rooms";
 
 type NavigationParamList = {
   Home: undefined;
-  ChatRoom: { chatId: string };
+  ChatRoom: { roomId: string };
 };
 interface RoomProps {
   room: Room;
