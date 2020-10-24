@@ -36,9 +36,12 @@ export const Messages = React.memo<MessagesProps>(({ data }) => {
   console.log(data);
   return (
     <Wrapper>
-      {data.map((message: Message) => {
-        return <Message key={message.id} message={message} />;
-      })}
+      {data
+        .slice(0)
+        .reverse()
+        .map((message: Message) => {
+          return <Message key={message.id} message={message} />;
+        })}
     </Wrapper>
   );
 });
