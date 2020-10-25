@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { Messages } from "./components/messages/Messages";
@@ -11,6 +11,10 @@ import { Subscriptions } from "./components/subscriptions/Subscriptions";
 interface Props {
   route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
 }
+
+const MainWrapper = styled.View`
+  margin-top: auto;
+`;
 
 const InputWrapper = styled.View`
   display: flex;
@@ -63,7 +67,7 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
 
   if (loading) return <Text>Loading...</Text>;
   return (
-    <View>
+    <MainWrapper>
       <Messages data={data.room.messages} />
       <Subscriptions subscription={subscriptionData && subscriptionData.messageAdded} />
       <InputWrapper>
@@ -79,7 +83,7 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
           onPress={() => sendMessage({ variables: { roomId, body: newMessage } })}
         />
       </InputWrapper>
-    </View>
+    </MainWrapper>
   );
 });
 
