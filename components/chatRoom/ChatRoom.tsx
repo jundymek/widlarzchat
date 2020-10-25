@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { Messages } from "./components/messages/Messages";
