@@ -24,7 +24,7 @@ const StyledView = styled.View<BoxProps>`
   height: auto;
   padding: 10px;
   border-radius: 20px;
-  background-color: ${(props) => (props.isMe ? "blue" : "white")};
+  background-color: ${(props) => (props.isMe ? "#4d51eb" : "white")};
 `;
 
 const StyledDateWrapper = styled.View`
