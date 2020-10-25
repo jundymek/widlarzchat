@@ -12,6 +12,10 @@ interface Props {
   route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
 }
 
+const MainWrapper = styled.View`
+  margin-top: auto;
+`;
+
 const InputWrapper = styled.View`
   display: flex;
   flex-direction: row;
@@ -63,7 +67,7 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
 
   if (loading) return <Text>Loading...</Text>;
   return (
-    <View>
+    <MainWrapper>
       <Messages data={data.room.messages} />
       <Subscriptions subscription={subscriptionData && subscriptionData.messageAdded} />
       <InputWrapper>
@@ -79,7 +83,7 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
           onPress={() => sendMessage({ variables: { roomId, body: newMessage } })}
         />
       </InputWrapper>
-    </View>
+    </MainWrapper>
   );
 });
 
