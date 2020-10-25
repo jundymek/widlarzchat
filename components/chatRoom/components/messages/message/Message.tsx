@@ -47,7 +47,9 @@ const DateText = styled.Text`
 
 export const Message = React.memo<MessageProps>(({ message }) => {
   const myUser = "ada4d6e3-aba6-49c3-9463-d6e09f984c1b";
-
+  if (!message) {
+    return null;
+  }
   return (
     <Wrapper isMe={myUser === message.user.id}>
       <Avatar

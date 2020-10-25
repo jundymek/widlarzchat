@@ -1,27 +1,10 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React from "react";
 import { Text } from "react-native";
 import { SingleRoom } from "./room/Room";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styled from "styled-components/native";
-
-export const GET_ROOMS = gql`
-  query Rooms {
-    usersRooms {
-      user {
-        email
-        firstName
-        lastName
-        id
-        role
-      }
-      rooms {
-        id
-        name
-      }
-    }
-  }
-`;
+import { GET_ROOMS } from "../../helpers/databaseQueries";
 
 export interface Room {
   id: string;
