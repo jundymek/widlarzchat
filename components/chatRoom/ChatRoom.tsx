@@ -80,7 +80,7 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
           placeholder="Type a message..."
           leftIcon={{ type: "font-awesome", name: "comment-o", color: "gray" }}
           onChangeText={(text) => setNewMessage(text)}
-          value={newMessage}
+          value={newMessage || ""}
         />
         <Icon name="send" type="material" color="#f50" onPress={handleSendMessage} />
       </InputWrapper>
