@@ -26,7 +26,6 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
   const { roomId } = route.params;
   const { data, loading } = useQuery(GET_ROOM, { variables: { roomId } });
   const { data: subscriptionData } = useSubscription(UPDATE_MESSAGES, { variables: { roomId } });
-  console.log(subscriptionData);
   const [sendMessage] = useMutation(NEW_MESSAGE, {
     refetchQueries: [
       {

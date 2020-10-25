@@ -1,5 +1,23 @@
 import { gql } from "@apollo/client";
 
+export const GET_ROOMS = gql`
+  query Rooms {
+    usersRooms {
+      user {
+        email
+        firstName
+        lastName
+        id
+        role
+      }
+      rooms {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const GET_ROOM = gql`
   query Room($roomId: String!) {
     room(id: $roomId) {

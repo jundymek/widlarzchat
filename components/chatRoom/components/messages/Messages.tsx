@@ -33,7 +33,6 @@ export const Messages = React.memo<MessagesProps>(({ data }) => {
   if (!data) {
     return null;
   }
-  console.log(data);
   return (
     <Wrapper>
       {data
