@@ -65,6 +65,11 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
     ],
   });
 
+  const handleSendMessage = () => {
+    sendMessage({ variables: { roomId, body: newMessage } });
+    setNewMessage("");
+  };
+
   if (loading) return <Text>Loading...</Text>;
   return (
     <MainWrapper>
@@ -75,13 +80,9 @@ export const ChatRoom = React.memo<Props>(({ route }) => {
           placeholder="Type a message..."
           leftIcon={{ type: "font-awesome", name: "comment-o", color: "gray" }}
           onChangeText={(text) => setNewMessage(text)}
+          value={newMessage}
         />
-        <Icon
-          name="send"
-          type="material"
-          color="#f50"
-          onPress={() => sendMessage({ variables: { roomId, body: newMessage } })}
-        />
+        <Icon name="send" type="material" color="#f50" onPress={handleSendMessage} />
       </InputWrapper>
     </MainWrapper>
   );
