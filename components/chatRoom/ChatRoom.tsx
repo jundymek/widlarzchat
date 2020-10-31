@@ -7,9 +7,8 @@ import { GET_ROOM, NEW_MESSAGE, UPDATE_MESSAGES } from "../../helpers/databaseQu
 import { Input, Icon } from "react-native-elements";
 import styled from "styled-components/native";
 import { Subscriptions } from "./components/subscriptions/Subscriptions";
-import { useHeaderHeight } from "@react-navigation/stack";
 
-interface Props {
+export interface ChatRoomProps {
   route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
 }
 
@@ -26,7 +25,7 @@ const InputWrapper = styled.View`
   width: 100%;
 `;
 
-export const ChatRoom = React.memo<Props>(({ route }) => {
+export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
   const [newMessage, setNewMessage] = useState<string | undefined>(undefined);
   const { roomId } = route.params;
   const { data, loading } = useQuery(GET_ROOM, {

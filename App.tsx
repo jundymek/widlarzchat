@@ -50,7 +50,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const Stack = createStackNavigator();
+type RootStackParamList = {
+  Home: undefined;
+  ChatRoom: { roomId: string; name: string };
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App(): ReactNode {
   return (
