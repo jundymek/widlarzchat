@@ -70,7 +70,10 @@ export default function App(): ReactNode {
           <Stack.Screen
             name="ChatRoom"
             component={ChatRoom}
-            options={({ route }) => ({ title: route.params && route.params.name })}
+            options={({ route }) => ({
+              title: route.params && route.params.name,
+              headerTitleStyle: { fontSize: 14, fontWeight: "bold", alignSelf: "center" },
+            })}
           />
         </Stack.Navigator>
         <StatusBar style="auto" />
