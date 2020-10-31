@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { Messages } from "./components/messages/Messages";
@@ -7,6 +7,7 @@ import { GET_ROOM, NEW_MESSAGE, UPDATE_MESSAGES } from "../../helpers/databaseQu
 import { Input, Icon } from "react-native-elements";
 import styled from "styled-components/native";
 import { Subscriptions } from "./components/subscriptions/Subscriptions";
+import { LoadingSpinner } from "../loadingSpinner/LoadingSpinner";
 
 export interface ChatRoomProps {
   route: RouteProp<{ params: { roomId: string; name: string } }, "params">;
@@ -23,6 +24,13 @@ const InputWrapper = styled.View`
   align-items: center;
   padding: 20px;
   width: 100%;
+`;
+
+const LoadingSpinnerWrapper = styled.View`
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
@@ -76,7 +84,7 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
 
   const scrollRef = React.createRef<ScrollView>();
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <LoadingSpinner />;
   return (
     <StyledScrollView
       ref={scrollRef}

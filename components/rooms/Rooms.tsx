@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import { Text } from "react-native";
 import { SingleRoom } from "./room/Room";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styled from "styled-components/native";
 import { GET_ROOMS } from "../../helpers/databaseQueries";
+import { LoadingSpinner } from "../loadingSpinner/LoadingSpinner";
 
 export interface Room {
   id: string;
@@ -27,7 +27,7 @@ const StyledView = styled.View`
 export const Rooms = React.memo<Props>(({ navigation }) => {
   const { data, loading } = useQuery(GET_ROOMS);
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <LoadingSpinner />;
   return (
     <StyledView>
       {data &&
