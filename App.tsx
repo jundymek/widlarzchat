@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React, { ReactNode } from "react";
 
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, split } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 import { API_TOKEN } from "@env";
@@ -14,7 +14,6 @@ import { ChatRoom } from "./components/chatRoom/ChatRoom";
 import { Socket as PhoenixSocket } from "phoenix";
 import * as AbsintheSocket from "@absinthe/socket";
 import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
-import { split } from "apollo-link";
 import { hasSubscription } from "@jumpn/utils-graphql";
 
 const httpLink = createHttpLink({

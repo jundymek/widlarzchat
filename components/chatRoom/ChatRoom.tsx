@@ -26,11 +26,8 @@ const InputWrapper = styled.View`
   width: 100%;
 `;
 
-const LoadingSpinnerWrapper = styled.View`
-  height: calc(100vh - 60px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StyledInput = styled(Input)`
+  padding: 10px;
 `;
 
 export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
@@ -39,9 +36,7 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
   const { data, loading } = useQuery(GET_ROOM, {
     variables: { roomId },
     onCompleted() {
-      console.log(scrollRef);
       if (scrollRef.current) {
-        console.log(scrollRef.current);
         scrollRef.current.scrollToEnd({ animated: true });
       }
     },
@@ -91,9 +86,9 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
       contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-end", flexDirection: "column" }}
     >
       <Messages data={data.room.messages} />
-      <Subscriptions subscription={subscriptionData && subscriptionData.messageAdded} />
+      <Subscriptions subscription={subscriptionData && subscriptionData.messageAdded} data={data.room.messages} />
       <InputWrapper>
-        <Input
+        <StyledInput
           placeholder="Type a message..."
           leftIcon={{ type: "font-awesome", name: "comment-o", color: "gray" }}
           onChangeText={(text) => setNewMessage(text)}

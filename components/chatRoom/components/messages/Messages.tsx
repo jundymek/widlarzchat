@@ -22,7 +22,7 @@ interface MessagesProps {
   data: Message[];
 }
 
-const Wrapper = styled.View`
+export const MessageWrapper = styled.View`
   padding: 10px;
 `;
 
@@ -31,14 +31,14 @@ export const Messages = React.memo<MessagesProps>(({ data }) => {
     return null;
   }
   return (
-    <Wrapper>
+    <MessageWrapper>
       {data
         .slice(0)
         .reverse()
         .map((message: Message) => {
           return <Message key={message.id} message={message} />;
         })}
-    </Wrapper>
+    </MessageWrapper>
   );
 });
 
