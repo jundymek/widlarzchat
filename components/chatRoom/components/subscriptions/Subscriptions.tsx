@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { Animated } from "react-native";
 import { Message } from "../messages/message/Message";
 import { Message as MessageProps, MessageWrapper } from "../messages/Messages";
 
@@ -17,12 +18,34 @@ function checkSubscription(id: string, data: MessageProps[]) {
 }
 
 export const Subscriptions = React.memo<SubscriptionsProps>(({ subscription, data }) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  const fadeIn = () => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 10000,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  useEffect(() => {
+    fadeIn();
+  }, []);
+
   if (subscription && checkSubscription(subscription.id, data)) {
     return null;
   }
   return (
     <MessageWrapper>
-      <Message message={subscription} />
+      <Animated.View
+        style={[
+          {
+            opacity,
+          },
+        ]}
+      >
+        <Message message={subscription} />
+      </Animated.View>
     </MessageWrapper>
   );
 });
