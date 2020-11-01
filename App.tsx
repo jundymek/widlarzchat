@@ -40,7 +40,7 @@ const phoenixSocket = new PhoenixSocket("wss://chat.thewidlarzgroup.com/socket",
 });
 
 const absintheSocket = AbsintheSocket.create(phoenixSocket);
-const websocketLink = createAbsintheSocketLink(absintheSocket);
+const websocketLink: any = createAbsintheSocketLink(absintheSocket);
 
 const link = split((operation) => hasSubscription(operation.query), websocketLink, authedHttpLink);
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { Message } from "../messages/message/Message";
-import { Message as MessageProps, MessageWrapper } from "../messages/Messages";
+import { Message as MessageProps } from "../messages/Messages";
 
 interface SubscriptionsProps {
   subscription: MessageProps;
@@ -17,7 +17,7 @@ function checkSubscription(id: string, data: MessageProps[]) {
   return false;
 }
 
-export const Subscriptions = React.memo<SubscriptionsProps>(({ subscription, data }) => {
+export const NewMessageSubscription = React.memo<SubscriptionsProps>(({ subscription, data }) => {
   const opacity = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {
@@ -36,18 +36,16 @@ export const Subscriptions = React.memo<SubscriptionsProps>(({ subscription, dat
     return null;
   }
   return (
-    <MessageWrapper>
-      <Animated.View
-        style={[
-          {
-            opacity,
-          },
-        ]}
-      >
-        <Message message={subscription} />
-      </Animated.View>
-    </MessageWrapper>
+    <Animated.View
+      style={[
+        {
+          opacity,
+        },
+      ]}
+    >
+      <Message message={subscription} />
+    </Animated.View>
   );
 });
 
-Subscriptions.displayName = "Subscriptions";
+NewMessageSubscription.displayName = "NewMessageSubscription";

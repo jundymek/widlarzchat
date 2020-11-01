@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { ScrollView } from "react-native";
 import { RouteProp } from "@react-navigation/native";
-import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Messages } from "./components/messages/Messages";
-import { GET_ROOM, NEW_MESSAGE, UPDATE_MESSAGES } from "../../helpers/databaseQueries";
+import { GET_ROOM, NEW_MESSAGE } from "../../helpers/databaseQueries";
 import { Input, Icon } from "react-native-elements";
 import styled from "styled-components/native";
-import { Subscriptions } from "./components/subscriptions/Subscriptions";
 import { LoadingSpinner } from "../loadingSpinner/LoadingSpinner";
 
 export interface ChatRoomProps {
@@ -41,7 +40,6 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
       }
     },
   });
-  const { data: subscriptionData } = useSubscription(UPDATE_MESSAGES, { variables: { roomId } });
   const [sendMessage] = useMutation(NEW_MESSAGE, {
     refetchQueries: [
       {
@@ -85,8 +83,7 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
       ref={scrollRef}
       contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-end", flexDirection: "column" }}
     >
-      <Messages data={data.room.messages} />
-      <Subscriptions subscription={subscriptionData && subscriptionData.messageAdded} data={data.room.messages} />
+      <Messages data={data.room.messages} roomId={roomId} />
       <InputWrapper>
         <StyledInput
           placeholder="Type a message..."
