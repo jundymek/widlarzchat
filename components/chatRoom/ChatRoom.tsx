@@ -30,7 +30,7 @@ const StyledInput = styled(Input)`
 `;
 
 export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
-  const [newMessage, setNewMessage] = useState<string | undefined>(undefined);
+  const [newMessage, setNewMessage] = useState<string>("");
   const { roomId } = route.params;
   const { data, loading } = useQuery(GET_ROOM, {
     variables: { roomId },
@@ -73,6 +73,9 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
         variables: { roomId: roomId },
       },
     ],
+    onCompleted() {
+      setNewMessage("");
+    },
   });
 
   const scrollRef = React.createRef<ScrollView>();
@@ -89,6 +92,7 @@ export const ChatRoom = React.memo<ChatRoomProps>(({ route }) => {
           placeholder="Type a message..."
           leftIcon={{ type: "font-awesome", name: "comment-o", color: "gray" }}
           onChangeText={(text) => setNewMessage(text)}
+          value={newMessage}
         />
         <Icon
           name="send"

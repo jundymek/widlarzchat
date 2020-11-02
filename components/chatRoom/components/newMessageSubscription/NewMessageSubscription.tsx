@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, Easing } from "react-native";
 import { Message } from "../messages/message/Message";
 import { Message as MessageProps } from "../messages/Messages";
 
@@ -23,7 +23,8 @@ export const NewMessageSubscription = React.memo<SubscriptionsProps>(({ subscrip
   const fadeIn = () => {
     Animated.timing(opacity, {
       toValue: 1,
-      duration: 10000,
+      duration: 5000,
+      easing: Easing.bezier(0.07, 1, 0.33, 0.89),
       useNativeDriver: true,
     }).start();
   };
